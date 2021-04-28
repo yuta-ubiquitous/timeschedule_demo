@@ -129,3 +129,4 @@ dmypy.json
 .pyre/
 
 schedule.db
+.DS_Store
