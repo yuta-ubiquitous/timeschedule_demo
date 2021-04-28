@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <title>Propeller Basic HTML Template</title>
+    <title>timeschedule_demo</title>
 
     <!-- Bootstrap css-->
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
@@ -23,6 +23,9 @@
   
   <body>
     <h1>スケジュール</h1>
+
+    <input type="date" name="date" id="datepicker" value="{{ day }}">
+
     <div class="pmd-card pmd-z-depth">
         <div class="table-responsive"> 
             <table cellspacing="0" cellpadding="0" class="table pmd-table" id="table-propeller">
@@ -46,6 +49,11 @@
         </div>
     </div>
 
+    <!-- Default raised circle button with ripple effect -->
+    <button onclick="location.href='/add'" class="btn pmd-btn-fab pmd-btn-raised pmd-ripple-effect btn-primary" type="button">
+        <i class="material-icons pmd-sm">add</i>
+    </button>
+
     <!-- jQuery before Propeller.js -->
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 	
@@ -62,7 +70,15 @@
     <!-- Datepicker -->
     <script type="text/javascript">
         $(function () {
-
+            $('#datetimepicker').datetimepicker({
+                'format' : "YYYY-MM-DD",
+                // locale: 'jp'
+                // 'format' : "YYYY-MM-DD hh:mm:ss", 
+                // HH:mm:ss
+            })
+            $('#datepicker').blur(function(e){
+                window.location.href = '?date=' + e.target.value
+            });
         });
     </script>
   </body>
