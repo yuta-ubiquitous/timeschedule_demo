@@ -5,6 +5,7 @@ from fastapi import Depends, FastAPI, Form, Request
 from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
+from pydantic.types import conset
 
 from timeschedule import db
 from timeschedule.models import Schedule
@@ -26,12 +27,16 @@ def get_engine() -> sa.engine.Connectable:
 
 
 @app.get("/", response_class=HTMLResponse)
-async def read_item(request: Request):
-    return templates.TemplateResponse("index.html", {"request": request})
+async def read_schedules(
+    request: Request, engine: sa.engine.Connectable = Depends(get_engine)
+):
+    schedules = db.find_all(engine)
+    context = {"request": request, "schedules": schedules}
+    return templates.TemplateResponse("index.html", context)
 
 
 @app.get("/add", response_class=HTMLResponse)
-async def read_item(request: Request):
+async def add_schedule(request: Request):
     return templates.TemplateResponse("add.html", {"request": request})
 
 
