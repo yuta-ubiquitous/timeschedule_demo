@@ -1,5 +1,5 @@
 import sqlalchemy as sa
-from fastapi import FastAPI, Request
+from fastapi import FastAPI, Form, Request
 from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
@@ -29,4 +29,15 @@ async def read_item(request: Request):
 
 @app.get("/add", response_class=HTMLResponse)
 async def read_item(request: Request):
+    return templates.TemplateResponse("add.html", {"request": request})
+
+
+@app.post("/add", response_class=HTMLResponse)
+async def add_schedule(
+    request: Request,
+    name: str = Form(...),
+    datetime_start: str = Form(...),
+    datetime_end: str = Form(...),
+):
+    print(name, datetime_start, datetime_end)
     return templates.TemplateResponse("add.html", {"request": request})
