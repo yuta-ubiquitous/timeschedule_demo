@@ -57,9 +57,9 @@
       $("#datetimepicker").datetimepicker({
         format: "YYYY-MM-DD",
       });
-      $("#datepicker").blur(function (e) {
+      $("#datepicker").change(function(e) {
         window.location.href = "?date=" + e.target.value;
-      });
+      })
     });
   </script>
   {% endblock %}
