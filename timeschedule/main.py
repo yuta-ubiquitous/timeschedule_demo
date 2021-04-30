@@ -41,8 +41,8 @@ async def read_schedules(
     searched_schedules = [
         schedule
         for schedule in schedules
-        if schedule.datetime_start < day_datetime
-        or day_datetime + timedelta(days=1) < schedule.datetime_end
+        if not schedule.datetime_end < day_datetime
+        and not schedule.datetime_start > (day_datetime + timedelta(days=1))
     ]
 
     day_jp_format = datetime.strftime(day_datetime, "%Y年%m月%d日")
@@ -65,14 +65,19 @@ async def add_schedule(request: Request):
 async def add_schedule(
     request: Request,
     engine: sa.engine.Connectable = Depends(get_engine),
-    name: str = Form(...),
-    datetime_start_str: str = Form(...),
-    datetime_end_str: str = Form(...),
+    name: str = Form(""),
+    datetime_start_str: str = Form(""),
+    datetime_end_str: str = Form(""),
 ):
 
     success_logs = []
     error_logs = []
     datetime_start, datetime_end = None, None
+
+    if len(name) == 0:
+        error_logs.append("スケジュール名を入力してください")
+    elif len(name) > 30:
+        error_logs.append("スケジュール名は30文字以内にしてください")
 
     if len(datetime_start_str) == 0:
         error_logs.append("開始日時を入力してください")
@@ -85,11 +90,6 @@ async def add_schedule(
 
         if datetime_start > datetime_end:
             error_logs.append("開始日時は終了日時より前に指定してください")
-
-    if len(name) == 0:
-        error_logs.append("スケジュール名を入力してください")
-    elif len(name) > 30:
-        error_logs.append("スケジュール名は30文字以内にしてください")
 
     if len(error_logs) == 0:
         # dbに追加
