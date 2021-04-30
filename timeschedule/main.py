@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 
 import sqlalchemy as sa
 from fastapi import Depends, FastAPI, Form, Request
@@ -41,7 +41,8 @@ async def read_schedules(
     searched_schedules = [
         schedule
         for schedule in schedules
-        if schedule.datetime_start < day_datetime < schedule.datetime_end
+        if schedule.datetime_start < day_datetime
+        or day_datetime + timedelta(days=1) < schedule.datetime_end
     ]
 
     day_jp_format = datetime.strftime(day_datetime, "%Y年%m月%d日")
