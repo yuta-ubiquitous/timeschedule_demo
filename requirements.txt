@@ -1,0 +1,7 @@
+fastapi
+uvicorn
+Jinja2
+aiofiles
+SQLAlchemy
+python-multipart
+pytest

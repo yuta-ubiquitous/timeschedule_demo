@@ -1,0 +1,1 @@
+web: uvicorn timeschedule.main:app
