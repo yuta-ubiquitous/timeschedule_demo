@@ -34,8 +34,17 @@ async def read_schedules(
     if "date" in request.query_params.keys():
         day = request.query_params["date"]
 
+    day_datetime = datetime.strptime(day, "%Y-%m-%d")
+
     schedules = db.find_all(engine)
-    context = {"request": request, "schedules": schedules, "day": day}
+
+    searched_schedules = [
+        schedule
+        for schedule in schedules
+        if schedule.datetime_start < day_datetime < schedule.datetime_end
+    ]
+
+    context = {"request": request, "schedules": searched_schedules, "day": day}
     return templates.TemplateResponse("index.html", context)
 
 
