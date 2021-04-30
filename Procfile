@@ -1,1 +1,1 @@
-web: uvicorn timeschedule.main:app --host:0.0.0.0 --port=80
+web: uvicorn timeschedule.main:app --host=0.0.0.0 --port=80
