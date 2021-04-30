@@ -2,6 +2,8 @@
 
 タイムスケジュールの Web アプリ
 
+![ホーム画面](docs/main.png)
+
 ```
 $ poetry run uvicorn timeschedule.main:app --reload
 ```
