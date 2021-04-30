@@ -44,7 +44,14 @@ async def read_schedules(
         if schedule.datetime_start < day_datetime < schedule.datetime_end
     ]
 
-    context = {"request": request, "schedules": searched_schedules, "day": day}
+    day_jp_format = datetime.strftime(day_datetime, "%Y年%m月%d日")
+
+    context = {
+        "request": request,
+        "schedules": searched_schedules,
+        "day": day,
+        "day_str": day_jp_format,
+    }
     return templates.TemplateResponse("index.html", context)
 
 
