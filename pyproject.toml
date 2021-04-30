@@ -12,6 +12,7 @@ Jinja2 = "^2.11.3"
 aiofiles = "^0.6.0"
 SQLAlchemy = "^1.4.11"
 python-multipart = "^0.0.5"
+pytest = "^6.2.3"
 
 [tool.poetry.dev-dependencies]
 black = {version = "^21.4b1", allow-prereleases = true}

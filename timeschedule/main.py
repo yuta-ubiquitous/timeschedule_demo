@@ -29,6 +29,7 @@ def get_engine() -> sa.engine.Connectable:
 async def read_schedules(
     request: Request, engine: sa.engine.Connectable = Depends(get_engine)
 ):
+    """スケジュールの表示をするページ"""
 
     day = datetime.today().strftime("%Y-%m-%d")
     if "date" in request.query_params.keys():
@@ -38,6 +39,7 @@ async def read_schedules(
 
     schedules = db.find_all(engine)
 
+    # 指定の日付のデータを抽出
     searched_schedules = [
         schedule
         for schedule in schedules
@@ -58,6 +60,7 @@ async def read_schedules(
 
 @app.get("/add", response_class=HTMLResponse)
 async def add_schedule(request: Request):
+    """スケジュールを追加するページ（初期状態）"""
     return templates.TemplateResponse("add.html", {"request": request})
 
 
@@ -69,21 +72,20 @@ async def add_schedule(
     datetime_start_str: str = Form(""),
     datetime_end_str: str = Form(""),
 ):
+    """スケジュールを追加するページ（追加の処理）"""
 
-    success_logs = []
-    error_logs = []
     datetime_start, datetime_end = None, None
+    success_logs, error_logs = [], []
 
-    if len(name) == 0:
-        error_logs.append("スケジュール名を入力してください")
-    elif len(name) > 30:
-        error_logs.append("スケジュール名は30文字以内にしてください")
+    # nameのチェック
+    error_logs.extend(validate_name(name))
 
-    if len(datetime_start_str) == 0:
+    if not datetime_start_str:
         error_logs.append("開始日時を入力してください")
-    if len(datetime_end_str) == 0:
+    if not datetime_end_str:
         error_logs.append("終了日時を入力してください")
-    if len(datetime_start_str) > 0 and len(datetime_end_str) > 0:
+
+    if datetime_start_str and datetime_end_str:
         # 受け取った文字列の日時をdatetime型に変換
         datetime_start = datetime.strptime(datetime_start_str, "%Y-%m-%d %H:%M")
         datetime_end = datetime.strptime(datetime_end_str, "%Y-%m-%d %H:%M")
@@ -91,7 +93,7 @@ async def add_schedule(
         if datetime_start > datetime_end:
             error_logs.append("開始日時は終了日時より前に指定してください")
 
-    if len(error_logs) == 0:
+    if not error_logs:
         # dbに追加
         db.add(
             engine,
@@ -107,3 +109,13 @@ async def add_schedule(
         "error_logs": error_logs,
     }
     return templates.TemplateResponse("add.html", context=context)
+
+
+def validate_name(name: str) -> list[str]:
+    """nameをチェックする関数"""
+    logs: list[str] = []
+    if not name:
+        logs.append("スケジュール名を入力してください")
+    elif len(name) > 30:
+        logs.append("スケジュール名は30文字以内にしてください")
+    return logs
