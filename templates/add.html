@@ -43,14 +43,12 @@
   <button type="submit" class="btn pmd-ripple-effect btn-primary">保存</button>
 </form>
 
-{% for slog in success_log %}
+{% for log in success_logs %}
 <!--Display a success alert containing a link -->
-<div class="alert alert-success" role="alert">
-  Well done! You successfully read
-  <a href="javascript:void(0);" class="alert-link"
-    >this important alert message</a
-  >.
-</div>
+<div class="alert alert-success" role="alert">{{ log }}</div>
+{% endfor %} {% for log in error_logs %}
+<!--Display a error alert containing a link -->
+<div class="alert alert-danger" role="alert">{{ log }}</div>
 {% endfor %}
 
 <!-- Datepicker -->

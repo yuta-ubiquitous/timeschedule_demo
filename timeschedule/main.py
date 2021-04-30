@@ -62,19 +62,40 @@ async def add_schedule(
     datetime_end_str: str = Form(...),
 ):
 
-    success_log = []
+    success_logs = []
+    error_logs = []
+    datetime_start, datetime_end = None, None
 
-    # 受け取った文字列の日時をdatetime型に変換
-    datetime_start = datetime.strptime(datetime_start_str, "%Y-%m-%d %H:%M")
-    datetime_end = datetime.strptime(datetime_end_str, "%Y-%m-%d %H:%M")
+    if len(datetime_start_str) == 0:
+        error_logs.append("開始日時を入力してください")
+    if len(datetime_end_str) == 0:
+        error_logs.append("終了日時を入力してください")
+    if len(datetime_start_str) > 0 and len(datetime_end_str) > 0:
+        # 受け取った文字列の日時をdatetime型に変換
+        datetime_start = datetime.strptime(datetime_start_str, "%Y-%m-%d %H:%M")
+        datetime_end = datetime.strptime(datetime_end_str, "%Y-%m-%d %H:%M")
 
-    # dbに追加
-    db.add(
-        engine,
-        Schedule(name=name, datetime_start=datetime_start, datetime_end=datetime_end),
-    )
+        if datetime_start > datetime_end:
+            error_logs.append("開始日時は終了日時より前に指定してください")
 
-    success_log.append("スケジュールの保存に成功しました")
+    if len(name) == 0:
+        error_logs.append("スケジュール名を入力してください")
+    elif len(name) > 30:
+        error_logs.append("スケジュール名は30文字以内にしてください")
 
-    context = {"request": request, "success_log": success_log}
+    if len(error_logs) == 0:
+        # dbに追加
+        db.add(
+            engine,
+            Schedule(
+                name=name, datetime_start=datetime_start, datetime_end=datetime_end
+            ),
+        )
+        success_logs.append("スケジュールの保存に成功しました")
+
+    context = {
+        "request": request,
+        "success_logs": success_logs,
+        "error_logs": error_logs,
+    }
     return templates.TemplateResponse("add.html", context=context)
