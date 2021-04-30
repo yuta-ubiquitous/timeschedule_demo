@@ -1,0 +1,75 @@
+{% extends "layout.html" %} {% block body %}
+
+<button
+  onclick="location.href='/'"
+  class="btn pmd-btn-flat pmd-btn-flat pmd-ripple-effect btn-default"
+  type="button"
+>
+  <i class="material-icons pmd-sm">arrow_back</i>
+</button>
+
+<div class="container">
+  <div class="row">
+    <h1>スケジュールの作成</h1>
+  </div>
+  <div class="row">
+    <form action="/add" method="POST">
+      <div class="form-group pmd-textfield form-group-lg">
+        <label for="name" class="control-label">名前</label>
+        <input
+          name="name"
+          type="text"
+          id="name"
+          class="form-control input-group-lg"
+        />
+      </div>
+      <div
+        class="form-group pmd-textfield pmd-textfield-floating-label pmd-textfield-floating-label-completed"
+      >
+        <label for="datetime_start_str" class="control-label">開始日時</label>
+        <input
+          name="datetime_start_str"
+          type="text"
+          id="datetimepicker-start"
+          class="form-control"
+        />
+      </div>
+      <div
+        class="form-group pmd-textfield pmd-textfield-floating-label pmd-textfield-floating-label-completed"
+      >
+        <label for="datetime_end_str" class="control-label">終了日時</label>
+        <input
+          name="datetime_end_str"
+          type="text"
+          id="datetimepicker-end"
+          class="form-control"
+        />
+      </div>
+      <!--Primary button with a ripple effect-->
+      <button type="submit" class="btn pmd-ripple-effect btn-primary">
+        保存
+      </button>
+    </form>
+  </div>
+
+  {% for log in success_logs %}
+  <!--Display a success alert containing a link -->
+  <div class="alert alert-success" role="alert">{{ log }}</div>
+  {% endfor %} {% for log in error_logs %}
+  <!--Display a error alert containing a link -->
+  <div class="alert alert-danger" role="alert">{{ log }}</div>
+  {% endfor %}
+
+  <!-- Datepicker -->
+  <script type="text/javascript">
+    $(function () {
+      $("#datetimepicker-start").datetimepicker({
+        format: "YYYY-MM-DD HH:mm",
+      });
+      $("#datetimepicker-end").datetimepicker({
+        format: "YYYY-MM-DD HH:mm",
+      });
+    });
+  </script>
+  {% endblock %}
+</div>

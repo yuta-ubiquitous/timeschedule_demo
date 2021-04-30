@@ -1,0 +1,66 @@
+{% extends "layout.html" %} {% block body %}
+
+<div class="container">
+  <div class="row">
+    <h1>{{ day_str }}のスケジュール</h1>
+  </div>
+  <div class="row">
+    <input type="date" name="date" id="datepicker" value="{{ day }}" />
+</div>
+<div class="row">
+
+    <div class="pmd-card pmd-z-depth">
+      <div class="table-responsive">
+        <table
+          cellspacing="0"
+          cellpadding="0"
+          class="table pmd-table"
+          id="table-propeller"
+        >
+          <thead>
+            <tr>
+              <th>名前</th>
+              <th>開始日時</th>
+              <th>終了日時</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for schedule in schedules %}
+            <tr>
+              <td data-title="Name">{{ schedule.name }}</td>
+              <td data-title="datetime_start">{{ schedule.datetime_start }}</td>
+              <td data-title="datetime_end">{{ schedule.datetime_end }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+</div>
+
+<div class="row">
+
+    <!-- Default raised circle button with ripple effect -->
+    <button
+      onclick="location.href='/add'"
+      class="btn pmd-btn-fab pmd-btn-raised pmd-ripple-effect btn-primary"
+      type="button"
+    >
+      <i class="material-icons pmd-sm">add</i>
+    </button>
+</div>
+  </div>
+
+  <!-- Datepicker -->
+  <script type="text/javascript">
+    $(function () {
+      $("#datetimepicker").datetimepicker({
+        format: "YYYY-MM-DD",
+      });
+      $("#datepicker").change(function(e) {
+        window.location.href = "?date=" + e.target.value;
+      })
+    });
+  </script>
+  {% endblock %}
+</div>

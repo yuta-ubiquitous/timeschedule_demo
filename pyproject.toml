@@ -1,0 +1,25 @@
+[tool.poetry]
+name = "timeschedule_demo"
+version = "0.1.0"
+description = ""
+authors = ["Yuta Takahashi <takahashi-yuta@kadokawa.jp>"]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+fastapi = "^0.63.0"
+uvicorn = {extras = ["standard"], version = "^0.13.4"}
+Jinja2 = "^2.11.3"
+aiofiles = "^0.6.0"
+SQLAlchemy = "^1.4.11"
+python-multipart = "^0.0.5"
+pytest = "^6.2.3"
+
+[tool.poetry.dev-dependencies]
+black = {version = "^21.4b1", allow-prereleases = true}
+flake8 = "^3.9.1"
+isort = "^5.8.0"
+mypy = "^0.812"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
