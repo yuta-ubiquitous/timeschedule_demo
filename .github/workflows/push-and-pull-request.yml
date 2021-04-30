@@ -1,0 +1,37 @@
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-python@v2
+      with:
+        python-version: 3.9
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        python -m pip install poetry
+        poetry install
+    - name: Lint with flake8
+      run: |
+        poetry run flake8 . --count --show-source --statistics
+    - name: Lint with black
+      run: |
+        poetry run black . --check --diff
+    - name: Lint with mypy
+      run: |
+        poetry run mypy . --pretty
+    - name: Lint with isort
+      run: |
+        poetry run isort . --check-only
+    - name: Test with pytest
+      run: |
+        poetry run pytest
