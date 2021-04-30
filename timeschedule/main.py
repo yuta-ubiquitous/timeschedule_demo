@@ -62,7 +62,7 @@ async def add_schedule(
     datetime_end_str: str = Form(...),
 ):
 
-    isSuccess = False
+    success_log = []
 
     # 受け取った文字列の日時をdatetime型に変換
     datetime_start = datetime.strptime(datetime_start_str, "%Y-%m-%d %H:%M")
@@ -74,6 +74,7 @@ async def add_schedule(
         Schedule(name=name, datetime_start=datetime_start, datetime_end=datetime_end),
     )
 
-    content = {"request": request, "isSuccess": isSuccess}
+    success_log.append("スケジュールの保存に成功しました")
 
-    return templates.TemplateResponse("add.html", {"request": request})
+    context = {"request": request, "success_log": success_log}
+    return templates.TemplateResponse("add.html", context=context)

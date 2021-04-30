@@ -1,40 +1,67 @@
-{% extends "layout.html" %}
-{% block body %}
-    <button onclick="location.href='/'" class="btn pmd-btn-flat pmd-btn-flat pmd-ripple-effect btn-default" type="button">
-        <i class="material-icons pmd-sm">arrow_back</i>
-    </button>
-    <h1>スケジュールの作成</h1>
-    <form action="/add" method="POST">
-        <div class="form-group pmd-textfield form-group-lg">
-            <label for="name" class="control-label">名前</label>
-            <input name="name" type="text" id="name" class="form-control input-group-lg">
-        </div>
-        <div class="form-group pmd-textfield pmd-textfield-floating-label pmd-textfield-floating-label-completed">
-            <label for="datetime_start_str" class="control-label">開始日時</label>
-            <input name="datetime_start_str" type="text" id="datetimepicker-start" class="form-control"/>
-        </div>
-        <div class="form-group pmd-textfield pmd-textfield-floating-label pmd-textfield-floating-label-completed">
-            <label for="datetime_end_str" class="control-label">終了日時</label>
-            <input name="datetime_end_str" type="text" id="datetimepicker-end" class="form-control"/>
-        </div>
-        <!--Primary button with a ripple effect-->
-        <button type="submit" class="btn pmd-ripple-effect btn-primary"> 保存 </button >
-    </form>
+{% extends "layout.html" %} {% block body %}
+<button
+  onclick="location.href='/'"
+  class="btn pmd-btn-flat pmd-btn-flat pmd-ripple-effect btn-default"
+  type="button"
+>
+  <i class="material-icons pmd-sm">arrow_back</i>
+</button>
+<h1>スケジュールの作成</h1>
+<form action="/add" method="POST">
+  <div class="form-group pmd-textfield form-group-lg">
+    <label for="name" class="control-label">名前</label>
+    <input
+      name="name"
+      type="text"
+      id="name"
+      class="form-control input-group-lg"
+    />
+  </div>
+  <div
+    class="form-group pmd-textfield pmd-textfield-floating-label pmd-textfield-floating-label-completed"
+  >
+    <label for="datetime_start_str" class="control-label">開始日時</label>
+    <input
+      name="datetime_start_str"
+      type="text"
+      id="datetimepicker-start"
+      class="form-control"
+    />
+  </div>
+  <div
+    class="form-group pmd-textfield pmd-textfield-floating-label pmd-textfield-floating-label-completed"
+  >
+    <label for="datetime_end_str" class="control-label">終了日時</label>
+    <input
+      name="datetime_end_str"
+      type="text"
+      id="datetimepicker-end"
+      class="form-control"
+    />
+  </div>
+  <!--Primary button with a ripple effect-->
+  <button type="submit" class="btn pmd-ripple-effect btn-primary">保存</button>
+</form>
 
-    <!--Display a danger alert which can be dismissed later -->
-    <div role="alert" class="alert alert-danger alert-dismissible">
-        <button aria-label="Close" data-dismiss="alert" class="close" type="button"><span aria-hidden="true">×</span></button>
-        Oh snap! Change a few things up and try submitting again.
-    </div>
-    <!-- Datepicker -->
-    <script type="text/javascript">
-        $(function () {
-            $('#datetimepicker-start').datetimepicker({
-                'format' : "YYYY-MM-DD HH:mm",
-            });
-            $('#datetimepicker-end').datetimepicker({
-                'format' : "YYYY-MM-DD HH:mm",
-            });
-        });
-    </script>
+{% for slog in success_log %}
+<!--Display a success alert containing a link -->
+<div class="alert alert-success" role="alert">
+  Well done! You successfully read
+  <a href="javascript:void(0);" class="alert-link"
+    >this important alert message</a
+  >.
+</div>
+{% endfor %}
+
+<!-- Datepicker -->
+<script type="text/javascript">
+  $(function () {
+    $("#datetimepicker-start").datetimepicker({
+      format: "YYYY-MM-DD HH:mm",
+    });
+    $("#datetimepicker-end").datetimepicker({
+      format: "YYYY-MM-DD HH:mm",
+    });
+  });
+</script>
 {% endblock %}
