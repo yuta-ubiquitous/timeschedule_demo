@@ -65,7 +65,7 @@ async def add_schedule(request: Request):
 
 
 @app.post("/add", response_class=HTMLResponse)
-async def add_schedule(
+async def add_schedule_post(
     request: Request,
     engine: sa.engine.Connectable = Depends(get_engine),
     name: str = Form(""),
